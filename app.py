@@ -34,6 +34,12 @@ def result():
             name.append("rmdir " + (i.split(" from ", 1)[1]))
         if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Delete file"):
             name.append("rm " + (i.split(" from ", 1)[1]))
+        if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Move file"):
+            name.append("mv " + (i.split(" ", 4)[2]) + " " + (i.split(" ", 4)[4]))
+        if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Rename file"):
+            name.append("mv " + (i.split(" ", 4)[2]) + " " + (i.split(" ", 4)[4]))
+        if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Replace text"):
+            name.append("sed -i 's/" + (i.split(" ", 7)[2]) + "/" + (i.split(" ", 7)[4]) + "/g'" + " " + (i.split(" ", 7)[7]))
 
     length = len(name)
     return render_template("index.html", name = name, length = length)
