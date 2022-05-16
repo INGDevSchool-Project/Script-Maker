@@ -1,0 +1,39 @@
+<html>
+
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="../static/style.css">
+    </head>
+
+    <body>
+
+        <form class = "grid" action="/result" method = "POST">
+
+            <label for = "Name">Your request:</label>
+            <input type="text" name = "name" id="name">
+           <center><input type="Submit" class = "file_submit"></center>
+            <center>
+                {% if name %}
+                <p style="color:black;">Scriptul este:</p>
+                {% for i in range(0,length): %}
+                <p style="color:black;">{{name[i]}}</p>
+                {% endfor %}
+                {% endif %}
+            </center>
+        </form>
+
+        <form class = "grid">
+           <center> Instructions: </center>
+            <center>Use ";" as a delimiter if you want to make more requests, but no spaces before and after the ";"</center>
+            <center> Create a directory: Create directory at [path]/[directory name]</center>
+            <center> Create an empty file: Create empty file at [path]/[file name]</center>
+            <center> Delete a file: Delete directory from [path]/[directory name]</center>
+            <center> Delete a file: Delete file from [path]/[file name]</center>
+
+            <p><h5><center>! Some commands may require sudo ! </center>
+            <center>! Some commands may require installation with sudo apt-get *command-name* !</center> </h5></p>
+        </form>
+
+    </body>
+
+</html>
