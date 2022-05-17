@@ -20,6 +20,7 @@
                 <p style="color:black;">{{name[i]}}</p>
                 {% endfor %}
                 <br>
+                {% if request.form['options'] == "linux" %}
                 Tutorial Suggestions: <br>
                                     <br>
                                     <div class="box">
@@ -39,7 +40,17 @@
                                     {% endif %}
                                     {% endfor %}
 
-
+                {% endif %}
+                {% if request.form['options'] == "windows" %}
+                Tutorial Suggestions: <br>
+                                    <br>
+                                    <div class="box">
+                                    <iframe width="300" height="200" src="https://www.youtube.com/embed/VFuobJbbDtU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                    </div>
+                                    <div class="box">
+                                    <iframe width="300" height="200" src="https://www.youtube.com/embed/H0gwnFV_SFs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                    </div>
+                {% endif %}
                 {% endif %}
             </center>
         </form>

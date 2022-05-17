@@ -49,21 +49,49 @@ def result():
 
         length = len(name)
         session['script'] = name
+        session['os'] = option
         return render_template("index.html", name = name, length = length)
     else:
-        return render_template("index.html")
+        for i in subcereri:
+            if ((i.split(" ")[0] + " " +  i.split(" ")[1]) == "Create directory"):
+                name.append("md " + (i.split(" at ",1)[1]))
+            if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Create empty"):
+                name.append("type nul > " + (i.split(" at ", 1)[1]))
+            if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Delete directory"):
+                name.append("rmdir /s" + (i.split(" from ", 1)[1]))
+            if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Delete file"):
+                name.append("del " + (i.split(" from ", 1)[1]))
+            if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Move file"):
+                name.append("move " + (i.split(" ", 4)[2]) + " " + (i.split(" ", 4)[4]))
+            if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Rename file"):
+                name.append("ren " + (i.split(" ", 4)[2]) + " " + (i.split(" ", 4)[4]))
+            if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Replace text"):
+                name.append("gc " + (i.split(" ", 7)[7]) + " -replace " + "'" + (i.split(" ", 7)[2]) + "'" + "," + "'"+ (i.split(" ", 7)[4]) + "'" +"|" + "Out-File " + (i.split(" ", 7)[7]))
+
+        length = len(name)
+        session['script'] = name
+        session['os'] = option
+        return render_template("index.html", name = name, length = length)
 @app.route("/download", methods = ['POST', 'GET'])
 def download():
     script_download = session.get('script', None)
+    os_ales = session.get('os', None)
     length = len(script_download)
-    file=open("script.txt", "w")
-    file.write("#!/bin/bash" + "\n")
-    for i in script_download:
-        file.write(i + "\n")
-    file.close()
-    path = "E:\PythonProjects\script.txt"
-    return send_file(path, as_attachment=True)
-
+    if os_ales == "linux":
+        file=open("script.txt", "w")
+        file.write("#!/bin/bash" + "\n")
+        for i in script_download:
+            file.write(i + "\n")
+        file.close()
+        path = "E:\PythonProjects\script.txt"
+        return send_file(path, as_attachment=True)
+    else:
+        file=open("script.txt", "w")
+        for i in script_download:
+            file.write(i + "\n")
+        file.close()
+        path = "E:\PythonProjects\script.txt"
+        return send_file(path, as_attachment=True)
 
 if __name__=='__main__':
     app.run(debug=True)
