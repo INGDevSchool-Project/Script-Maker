@@ -1,7 +1,10 @@
 from flask import Flask, render_template, request
 import re
+from flask import session, send_file
 
 app = Flask(__name__)
+app.config["SECRET_KEY"] = 'secret key'
+app.config["SESSION_TYPE"] = 'filesystem'
 
 @app.route("/")
 
@@ -42,6 +45,21 @@ def result():
             name.append("sed -i 's/" + (i.split(" ", 7)[2]) + "/" + (i.split(" ", 7)[4]) + "/g'" + " " + (i.split(" ", 7)[7]))
 
     length = len(name)
+    session['script'] = name
     return render_template("index.html", name = name, length = length)
+
+@app.route("/download", methods = ['POST', 'GET'])
+def download():
+    script_download = session.get('script', None)
+    length = len(script_download)
+    file=open("script.txt", "w")
+    file.write("#!/bin/bash" + "\n")
+    for i in script_download:
+        file.write(i + "\n")
+    file.close()
+    path = "E:\PythonProjects\script.txt"
+    return send_file(path, as_attachment=True)
+
+
 if __name__=='__main__':
     app.run(debug=True)

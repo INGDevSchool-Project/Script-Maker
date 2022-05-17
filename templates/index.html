@@ -8,10 +8,9 @@
     <body>
 
         <form class = "grid" action="/result" method = "POST">
-
             <label for = "Name">Your request:</label>
             <input type="text" name = "name" id="name">
-           <center><input type="Submit" class = "file_submit"></center>
+           <center><input type="Submit" class = "file_submit" value="Submit"></center>
             <center>
                 {% if name %}
                 <p style="color:black;">The script is:</p>
@@ -20,6 +19,10 @@
                 {% endfor %}
                 {% endif %}
             </center>
+        </form>
+
+        <form class="grid" action="/download" method = "GET">
+            <center><input type="Submit" class = "file_submit" value="Download File"></center>
         </form>
 
         <form class = "grid">
