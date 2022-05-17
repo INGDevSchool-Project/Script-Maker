@@ -72,6 +72,7 @@ def result():
         session['script'] = name
         session['os'] = option
         return render_template("index.html", name = name, length = length)
+
 @app.route("/download", methods = ['POST', 'GET'])
 def download():
     script_download = session.get('script', None)
