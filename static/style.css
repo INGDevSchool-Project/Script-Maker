@@ -28,7 +28,14 @@ html,body{
 }
 
 
+.box{
+    float:left;
+    margin-right:40px;
 
+}
+clear{
+    clear:both;
+}
 .box2{
     grid-template-columns: 1fr 1fr;
 }

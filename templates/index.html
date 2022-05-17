@@ -17,6 +17,27 @@
                 {% for i in range(0,length): %}
                 <p style="color:black;">{{name[i]}}</p>
                 {% endfor %}
+                <br>
+                Tutorial Suggestions: <br>
+                                    <br>
+                                    <div class="box">
+                                    <iframe width="300" height="200" src="https://www.youtube.com/embed/6YUPw9Do3uQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                   </div>
+                                    {% for i in range(0,length): %}
+                                    {% if name[i].split(" ",1)[0] == "sed" %}
+                                    <div class="box">
+                                    <iframe width="300" height="200" src="https://www.youtube.com/embed/EACe7aiGczw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+                                    {% endif %}
+                                    {% endfor %}
+
+                                    {% for i in range(0,length): %}
+                                    {% if name[i].split(" ",1)[0] == "awk" %}
+                                    <div class="box">
+                                    <iframe width="300" height="200" src="https://www.youtube.com/embed/9YOZmI-zWok" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+                                    {% endif %}
+                                    {% endfor %}
+
+
                 {% endif %}
             </center>
         </form>
