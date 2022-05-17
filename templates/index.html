@@ -10,9 +10,11 @@
         <form class = "grid" action="/result" method = "POST">
             <label for = "Name">Your request:</label>
             <input type="text" name = "name" id="name">
-            <input type="radio" name="options" id="linux" value="linux"> Linux </input><br>
-            <input type="radio" name="options" id="windows" value="windows"> Windows </input><br>
-           <center><input type="Submit" class = "file_submit" value="Submit"></center>
+            <br> <br>
+            <center><label><input type="radio" name="options" id="linux" value="linux"  style="margin-right: 0"> Linux </input></label></center>
+            <center><label><input type="radio" name="options" id="windows" value="windows"  style="margin-right: 0"> Windows </input></label></center>
+            <br> <br>
+            <center><input type="Submit" class = "file_submit" value="Submit"></center>
             <center>
                 {% if name %}
                 <p style="color:black;">The script is:</p>

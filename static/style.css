@@ -22,6 +22,9 @@ html,body{
     grid-gap: 2vmax;
 }
 
+.radio {
+    margin: 0 auto;
+}
 .grid{
     display: grid;
     grid-gap: 0.5vmax;
