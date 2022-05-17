@@ -3,7 +3,7 @@ html,body{
     padding: 0px;
     list-style: none;
     box-sizing: border-box;
-    font-family: 'Rubik';
+    font-family: 'Times New Roman';
     letter-spacing: 3px;
 }
 
@@ -24,18 +24,19 @@ html,body{
 
 .grid{
     display: grid;
-    grid-gap: 2vmax;
+    grid-gap: 0.5vmax;
 }
 
 
 .box{
     float:left;
     margin-right:40px;
-
 }
+
 clear{
     clear:both;
 }
+
 .box2{
     grid-template-columns: 1fr 1fr;
 }

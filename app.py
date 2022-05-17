@@ -22,32 +22,36 @@ def result():
             count = count+1
     subcereri = cerere.split(";",count)
     name=[]
-    for i in subcereri:
-        ## Pentru model cu comenzi in baza de date
-        ## Pentru fiecare comanda, cererea o sa arate intr-un anumit fel
-        ## Ex: Create a directory: Create directory at [path]/[directory name]
-        ## In baza de date putem avea o coloana cu comanda in sine si un identificator, spre ex. primele 2 cuvinte din cerere
-        ## Codu de mai jos o sa se schimbe intr-un name.append(*interogare baza de date pe baza primelor 2 cuvinte din cerere* + ...)
-        ## Poate o sa mai fie un if sau poate mai multe, s-ar putea sa fie niste cazuri speciale
-        if ((i.split(" ")[0] + " " +  i.split(" ")[1]) == "Create directory"):
-            name.append("mkdir " + (i.split(" at ",1)[1]))
-        if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Create empty"):
-            name.append("touch " + (i.split(" at ", 1)[1]))
-        if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Delete directory"):
-            name.append("rmdir " + (i.split(" from ", 1)[1]))
-        if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Delete file"):
-            name.append("rm " + (i.split(" from ", 1)[1]))
-        if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Move file"):
-            name.append("mv " + (i.split(" ", 4)[2]) + " " + (i.split(" ", 4)[4]))
-        if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Rename file"):
-            name.append("mv " + (i.split(" ", 4)[2]) + " " + (i.split(" ", 4)[4]))
-        if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Replace text"):
-            name.append("sed -i 's/" + (i.split(" ", 7)[2]) + "/" + (i.split(" ", 7)[4]) + "/g'" + " " + (i.split(" ", 7)[7]))
+    option = request.form['options']
+    print(option)
+    if (option == "linux"):
+        for i in subcereri:
+            ## Pentru model cu comenzi in baza de date
+            ## Pentru fiecare comanda, cererea o sa arate intr-un anumit fel
+            ## Ex: Create a directory: Create directory at [path]/[directory name]
+            ## In baza de date putem avea o coloana cu comanda in sine si un identificator, spre ex. primele 2 cuvinte din cerere
+            ## Codu de mai jos o sa se schimbe intr-un name.append(*interogare baza de date pe baza primelor 2 cuvinte din cerere* + ...)
+            ## Poate o sa mai fie un if sau poate mai multe, s-ar putea sa fie niste cazuri speciale
+            if ((i.split(" ")[0] + " " +  i.split(" ")[1]) == "Create directory"):
+                name.append("mkdir " + (i.split(" at ",1)[1]))
+            if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Create empty"):
+                name.append("touch " + (i.split(" at ", 1)[1]))
+            if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Delete directory"):
+                name.append("rmdir " + (i.split(" from ", 1)[1]))
+            if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Delete file"):
+                name.append("rm " + (i.split(" from ", 1)[1]))
+            if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Move file"):
+                name.append("mv " + (i.split(" ", 4)[2]) + " " + (i.split(" ", 4)[4]))
+            if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Rename file"):
+                name.append("mv " + (i.split(" ", 4)[2]) + " " + (i.split(" ", 4)[4]))
+            if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Replace text"):
+                name.append("sed -i 's/" + (i.split(" ", 7)[2]) + "/" + (i.split(" ", 7)[4]) + "/g'" + " " + (i.split(" ", 7)[7]))
 
-    length = len(name)
-    session['script'] = name
-    return render_template("index.html", name = name, length = length)
-
+        length = len(name)
+        session['script'] = name
+        return render_template("index.html", name = name, length = length)
+    else:
+        return render_template("index.html")
 @app.route("/download", methods = ['POST', 'GET'])
 def download():
     script_download = session.get('script', None)
