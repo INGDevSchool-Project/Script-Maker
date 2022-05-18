@@ -31,6 +31,7 @@ stmt = select([
 connection = engine.connect()
 tables = connection.execute(stmt).fetchall()
 
+
 @app.route("/")
 
 @app.route("/home")
@@ -108,25 +109,19 @@ def result():
                         flash("The request was incorrect!", "warning")
                         redirect(url_for("home"))
                         return render_template("index.html")
+        for x in range(2): # 0 1
+            if ((i.split(" ")[0] + " " + i.split(" ")[1]) == tables[x][1]):
+                name.append(tables[x][os] + " " + (i.split(" at ", 1)[1]))
+                corect += 1
+        for x in range(2,4): # 2 3
+            if ((i.split(" ")[0] + " " + i.split(" ")[1]) == tables[x][1]):
+                name.append(tables[x][os] + " " + (i.split(" from ", 1)[1]))
+                corect += 1
+        for x in range(4, 6): # 4 5
+            if ((i.split(" ")[0] + " " + i.split(" ")[1]) == tables[x][1]):
+                name.append(tables[x][os] + " " + (i.split(" ", 4)[2]) + " " + (i.split(" ", 4)[4]))
+                corect += 1
 
-        if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Create directory"):
-            name.append(tables[0][os] + " " + (i.split(" at ", 1)[1]))
-            corect += 1
-        if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Create empty"):
-            name.append(tables[1][os] + " " + (i.split(" at ", 1)[1]))
-            corect += 1
-        if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Delete directory"):
-            name.append(tables[2][os] + " " + (i.split(" from ", 1)[1]))
-            corect += 1
-        if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Delete file"):
-            name.append(tables[3][os] + " " + (i.split(" from ", 1)[1]))
-            corect += 1
-        if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Move file"):
-            name.append(tables[4][os] + " " + (i.split(" ", 4)[2]) + " " + (i.split(" ", 4)[4]))
-            corect += 1
-        if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Rename file"):
-            name.append(tables[5][os] + " " + (i.split(" ", 4)[2]) + " " + (i.split(" ", 4)[4]))
-            corect += 1
         if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Replace text"):
             name.append(tables[6][os] + " " + (i.split(" ", 7)[7]) + ") " + "-replace " + "'" + (
             i.split(" ", 7)[2]) + "'" + ", " + "'" + (i.split(" ", 7)[4]) + "'" + "|" + "Out-File " + (
