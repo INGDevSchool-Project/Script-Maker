@@ -16,8 +16,8 @@ def home():
 @app.route("/result", methods = ['POST', 'GET'])
 def result():
     output = request.form.to_dict()
-    count = 0
     cerere = output["name"]
+    count = 0
     for i in cerere:
         if i == ';':
             count = count+1
@@ -25,9 +25,10 @@ def result():
     name=[]
     option = request.form['options']
     print(option)
-    corect = 0
     if (option == "linux"):
+        corect = 0
         for i in subcereri:
+
             ## Pentru model cu comenzi in baza de date
             ## Pentru fiecare comanda, cererea o sa arate intr-un anumit fel
             ## Ex: Create a directory: Create directory at [path]/[directory name]
@@ -36,64 +37,81 @@ def result():
             ## Poate o sa mai fie un if sau poate mai multe, s-ar putea sa fie niste cazuri speciale
             if ((i.split(" ")[0] + " " +  i.split(" ")[1]) == "Create directory"):
                 name.append("mkdir " + (i.split(" at ",1)[1]))
-                corect = 1
+                corect += 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Create empty"):
                 name.append("touch " + (i.split(" at ", 1)[1]))
-                corect = 1
+                corect += 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Delete directory"):
                 name.append("rmdir " + (i.split(" from ", 1)[1]))
-                corect = 1
+                corect += 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Delete file"):
                 name.append("rm " + (i.split(" from ", 1)[1]))
-                corect = 1
+                corect += 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Move file"):
                 name.append("mv " + (i.split(" ", 4)[2]) + " " + (i.split(" ", 4)[4]))
-                corect = 1
+                corect += 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Rename file"):
                 name.append("mv " + (i.split(" ", 4)[2]) + " " + (i.split(" ", 4)[4]))
-                corect = 1
+                corect += 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Replace text"):
                 name.append("sed -i 's/" + (i.split(" ", 7)[2]) + "/" + (i.split(" ", 7)[4]) + "/g'" + " " + (i.split(" ", 7)[7]))
-                corect = 1
+                corect += 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Delete empty"):
                 name.append("sed -i '/^$/d'" + " " + i.split(" ", 4)[4])
-                corect = 1
+                corect += 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Print lines"):
                 name.append("awk '/" + i.split(" ",5)[3] +"/ {print}' " + i.split(" ",5)[5])
-                corect = 1
-        if corect == 0:
+                corect += 1
+        if corect != len(subcereri):
             flash("The request was incorrect!", "warning")
             redirect(url_for("home"))
+            return render_template("index.html")
+        else:
+            length = len(name)
+            session['script'] = name
+            session['os'] = option
+            return render_template("index.html", name = name, length = length)
 
-        length = len(name)
-        session['script'] = name
-        session['os'] = option
-        return render_template("index.html", name = name, length = length)
     else:
+        corect = 0
         for i in subcereri:
             if ((i.split(" ")[0] + " " +  i.split(" ")[1]) == "Create directory"):
                 name.append("md " + (i.split(" at ",1)[1]))
+                corect += 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Create empty"):
                 name.append("type nul > " + (i.split(" at ", 1)[1]))
+                corect += 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Delete directory"):
                 name.append("rmdir /s " + (i.split(" from ", 1)[1]))
+                corect += 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Delete file"):
                 name.append("del " + (i.split(" from ", 1)[1]))
+                corect += 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Move file"):
                 name.append("move " + (i.split(" ", 4)[2]) + " " + (i.split(" ", 4)[4]))
+                corect += 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Rename file"):
                 name.append("ren " + (i.split(" ", 4)[2]) + " " + (i.split(" ", 4)[4]))
+                corect += 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Replace text"):
                 name.append("(gc " + (i.split(" ", 7)[7]) + ") " + "-replace " + "'" + (i.split(" ", 7)[2]) + "'" + ", " + "'"+ (i.split(" ", 7)[4]) + "'" +"|" + "Out-File " + (i.split(" ", 7)[7]))
+                corect += 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Delete empty"):
                 name.append("(gc " + (i.split(" ",4)[4]) +") | ? {$_.trim() -ne ""} | set-content " + (i.split(" ",4)[4]))
+                corect += 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Print lines"):
                 name.append("findstr " + i.split(" ", 5)[3] + " " + i.split(" ",5)[5])
+                corect += 1
 
-        length = len(name)
-        session['script'] = name
-        session['os'] = option
-        return render_template("index.html", name = name, length = length)
+        if corect != len(subcereri):
+            flash("The request was incorrect!", "warning")
+            redirect(url_for("home"))
+            return render_template("index.html")
+        else:
+            length = len(name)
+            session['script'] = name
+            session['os'] = option
+            return render_template("index.html", name = name, length = length)
 
 @app.route("/download", methods = ['POST', 'GET'])
 def download():
@@ -107,16 +125,13 @@ def download():
             file.write(i + "\n")
         file.close()
         path = ".\script.txt"
-
         return send_file(path, as_attachment=True)
     else:
         file=open("script.txt", "w")
         for i in script_download:
             file.write(i + "\n")
         file.close()
-
         path = ".\script.txt"
-
         return send_file(path, as_attachment=True)
 
 if __name__=='__main__':
