@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+from sqlalchemy import create_engine, select, MetaData, Table, and_
 import re
 import os
 from flask import session, send_file,flash,redirect, url_for
@@ -6,6 +7,29 @@ from flask import session, send_file,flash,redirect, url_for
 app = Flask(__name__)
 app.config["SECRET_KEY"] = 'secret key'
 app.config["SESSION_TYPE"] = 'filesystem'
+
+engine = create_engine("mysql+mysqldb://public:password@localhost:3306/scripts", echo=True, future=True)
+conn = engine.connect()
+
+
+metadata = MetaData(bind=None)
+table = Table(
+    'commands',
+    metadata,
+    autoload=True,
+    autoload_with=engine
+)
+
+stmt = select([
+    table.columns.idcommand,
+    table.columns.input,
+    table.columns.linux,
+    table.columns.windows,
+    table.columns.youtube,
+])
+
+connection = engine.connect()
+tables = connection.execute(stmt).fetchall()
 
 @app.route("/")
 
@@ -82,33 +106,36 @@ def result():
                             redirect(url_for("home"))
                             return render_template("index.html")
 
-            if ((i.split(" ")[0] + " " +  i.split(" ")[1]) == "Create directory"):
-                name.append("mkdir " + (i.split(" at ",1)[1]))
+            if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Create directory"):
+                name.append(tables[0][3] + " " + (i.split(" at ", 1)[1]))
                 corect += 1
-
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Create empty"):
-                name.append("touch " + (i.split(" at ", 1)[1]))
+                name.append(tables[1][3] + " " + (i.split(" at ", 1)[1]))
                 corect += 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Delete directory"):
-                name.append("rmdir " + (i.split(" from ", 1)[1]))
+                name.append(tables[2][3] + " " + (i.split(" from ", 1)[1]))
                 corect += 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Delete file"):
-                name.append("rm " + (i.split(" from ", 1)[1]))
+                name.append(tables[3][3] + " " + (i.split(" from ", 1)[1]))
                 corect += 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Move file"):
-                name.append("mv " + (i.split(" ", 4)[2]) + " " + (i.split(" ", 4)[4]))
+                name.append(tables[4][3] + " " + (i.split(" ", 4)[2]) + " " + (i.split(" ", 4)[4]))
                 corect += 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Rename file"):
-                name.append("mv " + (i.split(" ", 4)[2]) + " " + (i.split(" ", 4)[4]))
+                name.append(tables[5][3] + " " + (i.split(" ", 4)[2]) + " " + (i.split(" ", 4)[4]))
                 corect += 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Replace text"):
-                name.append("sed -i 's/" + (i.split(" ", 7)[2]) + "/" + (i.split(" ", 7)[4]) + "/g'" + " " + (i.split(" ", 7)[7]))
+                name.append(tables[6][3] + " " + (i.split(" ", 7)[7]) + ") " + "-replace " + "'" + (
+                i.split(" ", 7)[2]) + "'" + ", " + "'" + (i.split(" ", 7)[4]) + "'" + "|" + "Out-File " + (
+                            i.split(" ", 7)[7]))
                 corect += 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Delete empty"):
-                name.append("sed -i '/^$/d'" + " " + i.split(" ", 4)[4])
+                name.append(
+                    tables[7][3] + " " + (i.split(" ", 4)[4]) + ") | ? {$_.trim() -ne ""} | set-content " + (
+                    i.split(" ", 4)[4]))
                 corect += 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Print lines"):
-                name.append("awk '/" + i.split(" ",5)[3] +"/ {print}' " + i.split(" ",5)[5])
+                name.append(tables[8][3] + " " + i.split(" ", 5)[3] + " " + i.split(" ", 5)[5])
                 corect += 1
 
         if corect != len(subcereri):
@@ -171,32 +198,35 @@ def result():
                         return render_template("index.html")
 
         for i in subcereri:
-            if ((i.split(" ")[0] + " " +  i.split(" ")[1]) == "Create directory"):
-                name.append("md " + (i.split(" at ",1)[1]))
+            if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Create directory"):
+                name.append(tables[0][3] + " " + (i.split(" at ", 1)[1]))
                 corect += 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Create empty"):
-                name.append("type nul > " + (i.split(" at ", 1)[1]))
+                name.append(tables[1][3] + " " + (i.split(" at ", 1)[1]))
                 corect += 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Delete directory"):
-                name.append("rmdir /s " + (i.split(" from ", 1)[1]))
+                name.append(tables[2][3] + " " + (i.split(" from ", 1)[1]))
                 corect += 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Delete file"):
-                name.append("del " + (i.split(" from ", 1)[1]))
+                name.append(tables[3][3] + " " + (i.split(" from ", 1)[1]))
                 corect += 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Move file"):
-                name.append("move " + (i.split(" ", 4)[2]) + " " + (i.split(" ", 4)[4]))
+                name.append(tables[4][3] + " " + (i.split(" ", 4)[2]) + " " + (i.split(" ", 4)[4]))
                 corect += 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Rename file"):
-                name.append("ren " + (i.split(" ", 4)[2]) + " " + (i.split(" ", 4)[4]))
+                name.append(tables[5][3] + " " + (i.split(" ", 4)[2]) + " " + (i.split(" ", 4)[4]))
                 corect += 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Replace text"):
-                name.append("(gc " + (i.split(" ", 7)[7]) + ") " + "-replace " + "'" + (i.split(" ", 7)[2]) + "'" + ", " + "'"+ (i.split(" ", 7)[4]) + "'" +"|" + "Out-File " + (i.split(" ", 7)[7]))
+                name.append(tables[6][3] + " " + (i.split(" ", 7)[7]) + ") " + "-replace " + "'" + (
+                i.split(" ", 7)[2]) + "'" + ", " + "'" + (i.split(" ", 7)[4]) + "'" + "|" + "Out-File " + (
+                            i.split(" ", 7)[7]))
                 corect += 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Delete empty"):
-                name.append("(gc " + (i.split(" ",4)[4]) +") | ? {$_.trim() -ne ""} | set-content " + (i.split(" ",4)[4]))
+                name.append(tables[7][3] + " " + (i.split(" ", 4)[4]) + ") | ? {$_.trim() -ne ""} | set-content " + (
+                i.split(" ", 4)[4]))
                 corect += 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Print lines"):
-                name.append("findstr " + i.split(" ", 5)[3] + " " + i.split(" ",5)[5])
+                name.append(tables[8][3] + " " + i.split(" ", 5)[3] + " " + i.split(" ", 5)[5])
                 corect += 1
 
         if corect != len(subcereri):
