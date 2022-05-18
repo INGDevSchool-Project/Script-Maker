@@ -24,7 +24,6 @@ def result():
     subcereri = cerere.split(";",count)
     name=[]
     option = request.form['options']
-    print(option)
     if (option == "linux"):
         corect = 0
         for i in subcereri:
@@ -38,6 +37,7 @@ def result():
             if ((i.split(" ")[0] + " " +  i.split(" ")[1]) == "Create directory"):
                 name.append("mkdir " + (i.split(" at ",1)[1]))
                 corect += 1
+
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Create empty"):
                 name.append("touch " + (i.split(" at ", 1)[1]))
                 corect += 1
@@ -62,6 +62,7 @@ def result():
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Print lines"):
                 name.append("awk '/" + i.split(" ",5)[3] +"/ {print}' " + i.split(" ",5)[5])
                 corect += 1
+
         if corect != len(subcereri):
             flash("The request was incorrect!", "warning")
             redirect(url_for("home"))
