@@ -18,40 +18,38 @@
             <center><input type="Submit" class = "file_submit" value="Submit"></center>
             <center>
                 {% if name %}
-                <p style="color:black;">The script is:</p>
+                <p style="color:black;"><h3>The script is:</h3></p>
                 {% for i in range(0,length): %}
                 <p style="color:black;">{{name[i]}}</p>
                 {% endfor %}
                 <br>
                 {% if request.form['options'] == "linux" %}
-                Tutorial Suggestions: <br>
-                                    <br>
-                                    <div class="box">
-                                    <iframe width="300" height="200" src="https://www.youtube.com/embed/6YUPw9Do3uQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <h3>Tutorial Suggestions: </h3><br>
+                                    <div>
+                                    <iframe width="400" height="200" src="https://www.youtube.com/embed/6YUPw9Do3uQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                    </div>
                                     {% for i in range(0,length): %}
                                     {% if name[i].split(" ",1)[0] == "sed" %}
-                                    <div class="box">
-                                    <iframe width="300" height="200" src="https://www.youtube.com/embed/EACe7aiGczw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+                                    <div>
+                                    <iframe width="400" height="200" src="https://www.youtube.com/embed/EACe7aiGczw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
                                     {% endif %}
                                     {% endfor %}
 
                                     {% for i in range(0,length): %}
                                     {% if name[i].split(" ",1)[0] == "awk" %}
-                                    <div class="box">
-                                    <iframe width="300" height="200" src="https://www.youtube.com/embed/9YOZmI-zWok" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+                                    <div>
+                                    <iframe width="400" height="200" src="https://www.youtube.com/embed/9YOZmI-zWok" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
                                     {% endif %}
                                     {% endfor %}
 
                 {% endif %}
                 {% if request.form['options'] == "windows" %}
-                Tutorial Suggestions: <br>
-                                    <br>
-                                    <div class="box">
-                                    <iframe width="300" height="200" src="https://www.youtube.com/embed/VFuobJbbDtU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <h3>Tutorial Suggestions: </h3><br>
+                                    <div>
+                                    <iframe width="400" height="200" src="https://www.youtube.com/embed/VFuobJbbDtU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                     </div>
-                                    <div class="box">
-                                    <iframe width="300" height="200" src="https://www.youtube.com/embed/H0gwnFV_SFs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                    <div>
+                                    <iframe width="400" height="200" src="https://www.youtube.com/embed/H0gwnFV_SFs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                     </div>
                 {% endif %}
                 {% endif %}
@@ -63,20 +61,21 @@
         </form>
 
         <form class = "grid">
-           <h5><center> Instructions: </center></h5>
+           <h2><center> Instructions: </center></h2>
             <br><br>
             <center>Use ";" as a delimiter if you want to make more requests, but no spaces before and after the ";"</center>
+            <br>
             <center> Create a directory: Create directory at [path]/[directory name]</center>
-            <center> Create an empty file: Create empty file at [path]/[file name]</center>
+            <center> Create an empty file: Create empty file at [path]/[file.ext]</center>
             <center> Delete a file: Delete directory from [path]/[directory name]</center>
-            <center> Delete a file: Delete file from [path]/[file name]</center>
-            <center> Move a file: Move file [file.ext] to [path]/</center>
+            <center> Delete a file: Delete file from [path]/[file.ext]</center>
+            <center> Move a file: Move file [file.ext] to [path]</center>
             <center> Rename a file: Rename file [file.ext] to [newfile.ext]</center>
             <center> Replace a text in a file: Replace text [your-text] with [new-text] in file [file.ext]</center>
             <center> Delete empty lines from a file: Delete empty lines from [path]/[file.ext]</center>
             <center> Print lines which match a pattern: Print lines matching [pattern] from [path]/[file.ext]</center>
-            <p><h5><center> Some commands may require sudo ! </center>
-            <center> Some commands may require installation with sudo apt-get *command-name* !</center> </h5></p>
+            <h4><center> Some commands may require sudo ! </center>
+            <center> Some commands may require installation with sudo apt-get *command-name* !</center> </h4>
         </form>
 
     </body>

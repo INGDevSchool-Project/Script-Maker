@@ -5,7 +5,8 @@ html,body{
     box-sizing: border-box;
     font-family: 'Times New Roman';
     letter-spacing: 1px;
-    background-image: linear-gradient(#525978, #25263b 60%);
+    background-image: linear-gradient(#525978, #25263b 80%);
+
 }
 
 
@@ -74,6 +75,7 @@ form{
     margin: 2vmax 10vmax;
     padding:3vmax;
     border: 1px solid black;
+    display: inline-block;
 }
 
 label{
@@ -112,7 +114,13 @@ option{
   transition: 0.3s;
   letter-spacing: 3px;
 }
+div {
 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px;
+}
 .file_submit:hover{
   background-color: white;
   color: #25263b
