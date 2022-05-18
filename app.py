@@ -107,13 +107,16 @@ def download():
             file.write(i + "\n")
         file.close()
         path = ".\script.txt"
+
         return send_file(path, as_attachment=True)
     else:
         file=open("script.txt", "w")
         for i in script_download:
             file.write(i + "\n")
         file.close()
+
         path = ".\script.txt"
+
         return send_file(path, as_attachment=True)
 
 if __name__=='__main__':
