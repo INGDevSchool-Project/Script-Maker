@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 import re
-from flask import session, send_file
+import os
+from flask import session, send_file,flash,redirect, url_for
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = 'secret key'
@@ -24,6 +25,7 @@ def result():
     name=[]
     option = request.form['options']
     print(option)
+    corect = 0
     if (option == "linux"):
         for i in subcereri:
             ## Pentru model cu comenzi in baza de date
@@ -34,22 +36,35 @@ def result():
             ## Poate o sa mai fie un if sau poate mai multe, s-ar putea sa fie niste cazuri speciale
             if ((i.split(" ")[0] + " " +  i.split(" ")[1]) == "Create directory"):
                 name.append("mkdir " + (i.split(" at ",1)[1]))
+                corect = 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Create empty"):
                 name.append("touch " + (i.split(" at ", 1)[1]))
+                corect = 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Delete directory"):
                 name.append("rmdir " + (i.split(" from ", 1)[1]))
+                corect = 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Delete file"):
                 name.append("rm " + (i.split(" from ", 1)[1]))
+                corect = 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Move file"):
                 name.append("mv " + (i.split(" ", 4)[2]) + " " + (i.split(" ", 4)[4]))
+                corect = 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Rename file"):
                 name.append("mv " + (i.split(" ", 4)[2]) + " " + (i.split(" ", 4)[4]))
+                corect = 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Replace text"):
                 name.append("sed -i 's/" + (i.split(" ", 7)[2]) + "/" + (i.split(" ", 7)[4]) + "/g'" + " " + (i.split(" ", 7)[7]))
+                corect = 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Delete empty"):
                 name.append("sed -i '/^$/d'" + " " + i.split(" ", 4)[4])
+                corect = 1
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Print lines"):
                 name.append("awk '/" + i.split(" ",5)[3] +"/ {print}' " + i.split(" ",5)[5])
+                corect = 1
+        if corect == 0:
+            flash("The request was incorrect!", "warning")
+            redirect(url_for("home"))
+
         length = len(name)
         session['script'] = name
         session['os'] = option
@@ -61,7 +76,7 @@ def result():
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Create empty"):
                 name.append("type nul > " + (i.split(" at ", 1)[1]))
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Delete directory"):
-                name.append("rmdir /s" + (i.split(" from ", 1)[1]))
+                name.append("rmdir /s " + (i.split(" from ", 1)[1]))
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Delete file"):
                 name.append("del " + (i.split(" from ", 1)[1]))
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Move file"):
