@@ -13,6 +13,13 @@
         <form class = "grid" action="/result" method = "POST">
             <label for = "Name">Your request:</label>
             <input type="text" name = "name" id="name">
+            {% with messages = get_flashed_messages() %}
+         {% if messages %}
+            {% for msg in messages %}
+                <p>{{msg}}</p>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
             <br> <br>
             <center><label><input type="radio" name="options" id="linux" value="linux"  style="margin-right: 0"> Linux </input></label></center>
             <center><label><input type="radio" name="options" id="windows" value="windows"  style="margin-right: 0"> Windows </input></label></center>
