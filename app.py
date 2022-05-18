@@ -46,7 +46,10 @@ def result():
                 name.append("mv " + (i.split(" ", 4)[2]) + " " + (i.split(" ", 4)[4]))
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Replace text"):
                 name.append("sed -i 's/" + (i.split(" ", 7)[2]) + "/" + (i.split(" ", 7)[4]) + "/g'" + " " + (i.split(" ", 7)[7]))
-
+            if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Delete empty"):
+                name.append("sed -i '/^$/d'" + " " + i.split(" ", 4)[4])
+            if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Print lines"):
+                name.append("awk '/" + i.split(" ",5)[3] +"/ {print}' " + i.split(" ",5)[5])
         length = len(name)
         session['script'] = name
         session['os'] = option
@@ -66,7 +69,11 @@ def result():
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Rename file"):
                 name.append("ren " + (i.split(" ", 4)[2]) + " " + (i.split(" ", 4)[4]))
             if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Replace text"):
-                name.append("gc " + (i.split(" ", 7)[7]) + " -replace " + "'" + (i.split(" ", 7)[2]) + "'" + "," + "'"+ (i.split(" ", 7)[4]) + "'" +"|" + "Out-File " + (i.split(" ", 7)[7]))
+                name.append("(gc " + (i.split(" ", 7)[7]) + ") " + "-replace " + "'" + (i.split(" ", 7)[2]) + "'" + ", " + "'"+ (i.split(" ", 7)[4]) + "'" +"|" + "Out-File " + (i.split(" ", 7)[7]))
+            if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Delete empty"):
+                name.append("(gc " + (i.split(" ",4)[4]) +") | ? {$_.trim() -ne ""} | set-content " + (i.split(" ",4)[4]))
+            if ((i.split(" ")[0] + " " + i.split(" ")[1]) == "Print lines"):
+                name.append("findstr " + i.split(" ", 5)[3] + " " + i.split(" ",5)[5])
 
         length = len(name)
         session['script'] = name
