@@ -1,17 +1,19 @@
 from flask import Flask, render_template, request
 import re
 import os
-from flask import session, send_file,flash,redirect, url_for
+from flask import session, send_file, flash, redirect, url_for
 
 app = Flask(__name__)
+
 app.config["SECRET_KEY"] = 'secret key'
 app.config["SESSION_TYPE"] = 'filesystem'
 
-@app.route("/")
 
+@app.route("/")
 @app.route("/home")
 def home():
     return render_template("index.html")
+
 
 @app.route("/result", methods = ['POST', 'GET'])
 def result():
@@ -21,6 +23,7 @@ def result():
     for i in cerere:
         if i == ';':
             count = count+1
+
     subcereri = cerere.split(";",count)
     name=[]
     model=["Create directory at [path]/[directory name]","Create empty file at [path]/[file.ext]","Delete directory from [path]/[directory name]","Delete file from [path]/[file.ext]","Move file [file.ext] to [path]","Rename file [file.ext] to [newfile.ext]","Replace text [your-text] with [new-text] in file [file.ext]","Delete empty lines from [path]/[file.ext]","Print lines matching [pattern] from [path]/[file.ext]"]
