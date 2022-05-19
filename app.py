@@ -122,55 +122,55 @@ def result():
             return render_template("index.html", name = name, length = length)
 
     else:
+
         corect = 0
-        impartire = i.split(" ")
-        if len(impartire) == 4:
-            if impartire[2] != "at" and impartire[2] != "from":
-                flash("The request was incorrect!", "warning")
-                redirect(url_for("home"))
-                return render_template("index.html")
-        else:
-            if len(impartire) == 5:
-                if impartire[0] == "Create" and impartire[1] == "empty":
-                    if impartire[2] != "file" or impartire[3] != "at":
-                        flash("The request was incorrect!", "warning")
-                        redirect(url_for("home"))
-                        return render_template("index.html")
-                if impartire[0] == "Move" and impartire[1] == "file":
-                    if impartire[3] != "to":
-                        flash("The request was incorrect!", "warning")
-                        redirect(url_for("home"))
-                        return render_template("index.html")
-                if impartire[0] == "Rename" and impartire[1] == "file":
-                    if impartire[3] != "to":
-                        flash("The request was incorrect!", "warning")
-                        redirect(url_for("home"))
-                        return render_template("index.html")
-                if impartire[0] == "Delete" and impartire[1] == "empty":
-                    if impartire[2] != "lines" or impartire[3] != "from":
-                        flash("The request was incorrect!", "warning")
-                        redirect(url_for("home"))
-                        return render_template("index.html")
+        for i in subcereri:
+            impartire = i.split(" ")
+            if len(impartire) == 4:
+                if impartire[2] != "at" and impartire[2] != "from":
+                    flash("The request was incorrect!", "warning")
+                    redirect(url_for("home"))
+                    return render_template("index.html")
             else:
-                if len(impartire) == 6:
-                    if impartire[0] == "Print" and impartire[1] == "lines":
-                        if impartire[2] != "matching" or impartire[4] != "from":
+                if len(impartire) == 5:
+                    if impartire[0] == "Create" and impartire[1] == "empty":
+                        if impartire[2] != "file" or impartire[3] != "at":
+                            flash("The request was incorrect!", "warning")
+                            redirect(url_for("home"))
+                            return render_template("index.html")
+                    if impartire[0] == "Move" and impartire[1] == "file":
+                        if impartire[3] != "to":
+                            flash("The request was incorrect!", "warning")
+                            redirect(url_for("home"))
+                            return render_template("index.html")
+                    if impartire[0] == "Rename" and impartire[1] == "file":
+                        if impartire[3] != "to":
+                            flash("The request was incorrect!", "warning")
+                            redirect(url_for("home"))
+                            return render_template("index.html")
+                    if impartire[0] == "Delete" and impartire[1] == "empty":
+                        if impartire[2] != "lines" or impartire[3] != "from":
                             flash("The request was incorrect!", "warning")
                             redirect(url_for("home"))
                             return render_template("index.html")
                 else:
-                    if len(impartire) == 8:
-                        if impartire[0] == "Replace" and impartire[1] == "text":
-                            if impartire[3] != "with" or impartire[5] != "in" or impartire[6] != "file":
+                    if len(impartire) == 6:
+                        if impartire[0] == "Print" and impartire[1] == "lines":
+                            if impartire[2] != "matching" or impartire[4] != "from":
                                 flash("The request was incorrect!", "warning")
                                 redirect(url_for("home"))
                                 return render_template("index.html")
                     else:
-                        flash("The request was incorrect!", "warning")
-                        redirect(url_for("home"))
-                        return render_template("index.html")
-
-        for i in subcereri:
+                        if len(impartire) == 8:
+                            if impartire[0] == "Replace" and impartire[1] == "text":
+                                if impartire[3] != "with" or impartire[5] != "in" or impartire[6] != "file":
+                                    flash("The request was incorrect!", "warning")
+                                    redirect(url_for("home"))
+                                    return render_template("index.html")
+                        else:
+                            flash("The request was incorrect!", "warning")
+                            redirect(url_for("home"))
+                            return render_template("index.html")
             if ((i.split(" ")[0] + " " +  i.split(" ")[1]) == "Create directory"):
                 name.append("md " + (i.split(" at ",1)[1]))
                 corect += 1
@@ -215,19 +215,19 @@ def download():
     os_ales = session.get('os', None)
     length = len(script_download)
     if os_ales == "linux":
-        file=open("script.txt", "w")
+        file=open("script.sh", "w")
         file.write("#!/bin/bash" + "\n")
         for i in script_download:
             file.write(i + "\n")
         file.close()
-        path = ".\script.txt"
+        path = ".\script.sh"
         return send_file(path, as_attachment=True)
     else:
-        file=open("script.txt", "w")
+        file=open("script.ps1", "w")
         for i in script_download:
             file.write(i + "\n")
         file.close()
-        path = ".\script.txt"
+        path = ".\script.ps1"
         return send_file(path, as_attachment=True)
 
 if __name__=='__main__':
